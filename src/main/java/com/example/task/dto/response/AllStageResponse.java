@@ -1,4 +1,4 @@
-package com.example.task.dto.request;
+package com.example.task.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class CompleteTaskRequest {
-    private String taskId;
-    private String userId;
+public class AllStageResponse {
+    private Integer stageId;
+    private String stageName;
 }

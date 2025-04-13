@@ -11,5 +11,6 @@ import lombok.NoArgsConstructor;
 @Builder
 public class UpdateTaskResponse {
     private String taskId;
+    private Integer updatedStageId;
     private String updatedStageName;
 }

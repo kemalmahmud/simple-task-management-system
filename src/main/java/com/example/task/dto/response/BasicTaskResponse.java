@@ -9,6 +9,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class AddTaskResponse {
+public class BasicTaskResponse {
     private String taskId;
 }

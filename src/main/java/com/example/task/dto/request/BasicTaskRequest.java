@@ -1,4 +1,4 @@
-package com.example.task.dto.response;
+package com.example.task.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,6 +9,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class EditTaskResponse {
-    private String taskId;
+public class BasicTaskRequest {
+    private String userId;
 }

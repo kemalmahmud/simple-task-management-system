@@ -1,4 +1,4 @@
-package com.example.task.dto.request;
+package com.example.task.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class RemoveTaskRequest {
+public class TaskDetailResponse {
     private String taskId;
-    private String userId;
+    private String taskName;
+    private String taskDetail;
+    private Integer stageId;
+    private String stageName;
 }

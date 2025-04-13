@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class UpdateTaskRequest {
-    private String taskId;
     private String userId;
     private Integer stageId;
 }
