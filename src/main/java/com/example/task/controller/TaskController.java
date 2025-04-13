@@ -4,11 +4,13 @@ import com.example.task.dto.request.*;
 import com.example.task.dto.response.BaseResponse;
 import com.example.task.model.Users;
 import com.example.task.service.TaskService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.security.core.Authentication;
 
+@SecurityRequirement(name = "bearerAuth")
 @RestController
 @RequestMapping("/task")
 public class TaskController {
@@ -52,28 +54,28 @@ public class TaskController {
     }
 
     // get specific task
-    @PostMapping("/{taskId}/detail")
+    @GetMapping("/{taskId}/detail")
     public ResponseEntity<BaseResponse> getTask(@PathVariable String taskId, Authentication authentication) {
         Users user = (Users) authentication.getPrincipal();
         return taskService.getSpecificTask(user.getUserId(), taskId);
     }
 
     // get all task
-    @PostMapping("/all-task")
+    @GetMapping("/all-task")
     public ResponseEntity<BaseResponse> getAllTasks(Authentication authentication) {
         Users user = (Users) authentication.getPrincipal();
         return taskService.getAllTask(user.getUserId(), "All");
     }
 
     // get incomplete task
-    @PostMapping("/incomplete-task")
+    @GetMapping("/incomplete-task")
     public ResponseEntity<BaseResponse> getAllIncompleteTasks(Authentication authentication) {
         Users user = (Users) authentication.getPrincipal();
         return taskService.getAllTask(user.getUserId(), "Incomplete");
     }
 
     // get completed task
-    @PostMapping("/completed-task")
+    @GetMapping("/completed-task")
     public ResponseEntity<BaseResponse> getAllCompletedTasks(Authentication authentication) {
         Users user = (Users) authentication.getPrincipal();
         return taskService.getAllTask(user.getUserId(), "Complete");

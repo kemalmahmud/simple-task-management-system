@@ -36,10 +36,14 @@ public class TaskService {
     public ResponseEntity<BaseResponse> addTask(AddTaskRequest request, Users user) {
         BaseResponse response = new BaseResponse();
         try {
+            var stage = stageRepo.findByStageName("To-do").orElse(null); // Todo: ganti jangan hardcode
+            if(stage == null) throw new Exception("Stage not found");
+
             var task = Tasks.builder()
                     .taskName(request.getTaskName())
                     .taskDetail(request.getTaskDetail())
                     .user(user)
+                    .stage(stage)
                     .createdAt(LocalDateTime.now())
                     .build();
             var newTask = tasksRepo.save(task);
@@ -153,6 +157,7 @@ public class TaskService {
             var stage = stageRepo.findByStageName(completedTaskName).orElse(null);
             if(stage == null) throw new Exception("Stage not found");
             task.setStage(stage);
+            tasksRepo.save(task);
             response.setStatus(HttpStatus.OK.value());
             response.setMessage("Success complete task");
             response.setData(UpdateTaskResponse.builder().taskId(task.getTaskId())

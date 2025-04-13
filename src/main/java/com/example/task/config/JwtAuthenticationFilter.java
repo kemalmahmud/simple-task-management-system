@@ -1,7 +1,6 @@
 package com.example.task.filter;
 
 import com.example.task.config.JwtConfig;
-import com.example.task.config.JwtUtil;
 import com.example.task.model.Users;
 import com.example.task.repository.UsersRepo;
 import jakarta.servlet.FilterChain;

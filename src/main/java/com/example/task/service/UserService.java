@@ -43,8 +43,9 @@ public class UserService {
                     .password(request.getPassword()) // anggap sudah di encrypt ketika dikirim
                     .createdAt(LocalDateTime.now())
                     .build();
+            usersRepo.save(user);
             response.setStatus(HttpStatus.OK.value());
-            response.setMessage("Success get stages");
+            response.setMessage("Success add user");
             response.setData(RegisterUserResponse.builder().userId(user.getUserId()).build());
 
             return ResponseEntity.ok(response);

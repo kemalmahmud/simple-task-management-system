@@ -9,7 +9,7 @@ import java.util.Date;
 
 @Component
 public class JwtConfig {
-    private final String jwtSecret = "SECRET_KEY_FOR_THIS_BABEEYY"; // min 256-bit
+    private final String jwtSecret = "XyP9eTfR5Xy67uD2kMz5qWlV1+vF9Ekt2V8pLwKs2Hg=";
     private final long expirationMs = 86400000; // 1 hari
 
     private Key getSigningKey() {

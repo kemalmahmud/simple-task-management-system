@@ -26,6 +26,8 @@ public class SecurityConfig {
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/user/register", "/user/login").permitAll()
+                        .requestMatchers("/stage/").permitAll() // untuk master data
+                        .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll() // swagger
                         .anyRequest().authenticated()
                 )
                 .exceptionHandling(ex -> ex
