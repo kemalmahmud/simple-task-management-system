@@ -9,7 +9,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class AddTaskRequest {
-    private String taskName;
-    private String taskDetail;
+public class RegisterUserRequest {
+    private String username;
+    private String name;
+    private String email;
+    private String password;
 }

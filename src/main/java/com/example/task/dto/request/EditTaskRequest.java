@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class EditTaskRequest {
-    private String userId;
     private String taskName;
     private String taskDetail;
 }

@@ -2,10 +2,12 @@ package com.example.task.controller;
 
 import com.example.task.dto.request.*;
 import com.example.task.dto.response.BaseResponse;
+import com.example.task.model.Users;
 import com.example.task.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.core.Authentication;
 
 @RestController
 @RequestMapping("/task")
@@ -16,55 +18,64 @@ public class TaskController {
 
     // add task
     @PostMapping("/add")
-    public ResponseEntity<BaseResponse> addTask(@RequestBody AddTaskRequest request) {
-        return taskService.addTask(request);
+    public ResponseEntity<BaseResponse> addTask(@RequestBody AddTaskRequest request, Authentication authentication) {
+        Users user = (Users) authentication.getPrincipal();
+        return taskService.addTask(request, user);
     }
 
     // edit task detail
     @PatchMapping("/{taskId}/edit")
-    public ResponseEntity<BaseResponse> editTask(@PathVariable String taskId, @RequestBody EditTaskRequest request) {
-        return taskService.editTask(request, taskId);
+    public ResponseEntity<BaseResponse> editTask(@PathVariable String taskId, @RequestBody EditTaskRequest request, Authentication authentication) {
+        Users user = (Users) authentication.getPrincipal();
+        return taskService.editTask(request, taskId, user.getUserId());
     }
 
     // remove task
     @PatchMapping("/{taskId}/delete")
-    public ResponseEntity<BaseResponse> removeTask(@PathVariable String taskId, @RequestBody BasicTaskRequest request) {
-        return taskService.removeTask(request, taskId);
+    public ResponseEntity<BaseResponse> removeTask(@PathVariable String taskId, Authentication authentication) {
+        Users user = (Users) authentication.getPrincipal();
+        return taskService.removeTask(user.getUserId(), taskId);
     }
 
     // update task stage
     @PatchMapping("/{taskId}/update")
-    public ResponseEntity<BaseResponse> updateTask(@PathVariable String taskId, @RequestBody UpdateTaskRequest request) {
-        return taskService.updateTask(request, taskId);
+    public ResponseEntity<BaseResponse> updateTask(@PathVariable String taskId, @RequestBody UpdateTaskRequest request, Authentication authentication) {
+        Users user = (Users) authentication.getPrincipal();
+        return taskService.updateTask(request, taskId, user.getUserId());
     }
 
     // complete task
     @PatchMapping("/{taskId}/complete")
-    public ResponseEntity<BaseResponse> completeTask(@PathVariable String taskId, @RequestBody BasicTaskRequest request) {
-        return taskService.completeTask(request, taskId);
+    public ResponseEntity<BaseResponse> completeTask(@PathVariable String taskId, Authentication authentication) {
+        Users user = (Users) authentication.getPrincipal();
+        return taskService.completeTask(user.getUserId(), taskId);
     }
 
     // get specific task
     @PostMapping("/{taskId}/detail")
-    public ResponseEntity<BaseResponse> getTask(@PathVariable String taskId, @RequestBody BasicTaskRequest request) {
-        return taskService.getSpecificTask(request, taskId);
+    public ResponseEntity<BaseResponse> getTask(@PathVariable String taskId, Authentication authentication) {
+        Users user = (Users) authentication.getPrincipal();
+        return taskService.getSpecificTask(user.getUserId(), taskId);
     }
 
     // get all task
     @PostMapping("/all-task")
-    public ResponseEntity<BaseResponse> getAllTasks(@RequestBody BasicTaskRequest request) {
-        return taskService.getAllTask(request, "All");
+    public ResponseEntity<BaseResponse> getAllTasks(Authentication authentication) {
+        Users user = (Users) authentication.getPrincipal();
+        return taskService.getAllTask(user.getUserId(), "All");
     }
 
     // get incomplete task
     @PostMapping("/incomplete-task")
-    public ResponseEntity<BaseResponse> getAllIncompleteTasks(@RequestBody BasicTaskRequest request) {
-        return taskService.getAllTask(request, "Incomplete");
+    public ResponseEntity<BaseResponse> getAllIncompleteTasks(Authentication authentication) {
+        Users user = (Users) authentication.getPrincipal();
+        return taskService.getAllTask(user.getUserId(), "Incomplete");
     }
 
     // get completed task
     @PostMapping("/completed-task")
-    public ResponseEntity<BaseResponse> getAllCompletedTasks(@RequestBody BasicTaskRequest request) {
-        return taskService.getAllTask(request, "Complete");
+    public ResponseEntity<BaseResponse> getAllCompletedTasks(Authentication authentication) {
+        Users user = (Users) authentication.getPrincipal();
+        return taskService.getAllTask(user.getUserId(), "Complete");
     }
 }

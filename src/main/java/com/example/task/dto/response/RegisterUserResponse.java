@@ -1,4 +1,4 @@
-package com.example.task.dto.request;
+package com.example.task.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class AddTaskRequest {
-    private String taskName;
-    private String taskDetail;
+public class RegisterUserResponse {
+    private String userId;
 }

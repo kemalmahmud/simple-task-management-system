@@ -3,6 +3,7 @@ package com.example.task.service;
 import com.example.task.dto.request.*;
 import com.example.task.dto.response.*;
 import com.example.task.model.Tasks;
+import com.example.task.model.Users;
 import com.example.task.repository.StageRepo;
 import com.example.task.repository.TasksRepo;
 import com.example.task.repository.UsersRepo;
@@ -32,12 +33,9 @@ public class TaskService {
     private final String completedTaskName = "Completed";
 
     // add task
-    public ResponseEntity<BaseResponse> addTask(AddTaskRequest request) {
+    public ResponseEntity<BaseResponse> addTask(AddTaskRequest request, Users user) {
         BaseResponse response = new BaseResponse();
         try {
-            var user = usersRepo.findById(request.getUserId()).orElse(null);
-            if(user == null) throw new Exception("User not found");
-
             var task = Tasks.builder()
                     .taskName(request.getTaskName())
                     .taskDetail(request.getTaskDetail())
@@ -61,13 +59,13 @@ public class TaskService {
     }
 
     // edit task detail
-    public ResponseEntity<BaseResponse> editTask(EditTaskRequest request, String taskId) {
+    public ResponseEntity<BaseResponse> editTask(EditTaskRequest request, String taskId, String userId) {
         BaseResponse response = new BaseResponse();
         try {
             var task = tasksRepo.findById(taskId).orElse(null);
             if(task == null) throw new Exception("Task not found");
 
-            if(!task.getUser().getUserId().equals(request.getUserId())) throw new Exception("User don't have permission for this task");
+            if(!task.getUser().getUserId().equals(userId)) throw new Exception("User don't have permission for this task");
             task.setTaskName(request.getTaskName());
             task.setTaskDetail(request.getTaskDetail());
 
@@ -88,13 +86,13 @@ public class TaskService {
     }
 
     // remove task
-    public ResponseEntity<BaseResponse> removeTask(BasicTaskRequest request, String taskId) {
+    public ResponseEntity<BaseResponse> removeTask(String userId, String taskId) {
         BaseResponse response = new BaseResponse();
         try {
             var task = tasksRepo.findById(taskId).orElse(null);
             if(task == null) throw new Exception("Task not found");
 
-            if(!task.getUser().getUserId().equals(request.getUserId())) throw new Exception("User don't have permission for this task");
+            if(!task.getUser().getUserId().equals(userId)) throw new Exception("User don't have permission for this task");
 
             task.setDeletedAt(LocalDateTime.now());
             tasksRepo.save(task);
@@ -114,13 +112,13 @@ public class TaskService {
     }
 
     // update task stage
-    public ResponseEntity<BaseResponse> updateTask(UpdateTaskRequest request, String taskId) {
+    public ResponseEntity<BaseResponse> updateTask(UpdateTaskRequest request, String taskId, String userId) {
         BaseResponse response = new BaseResponse();
         try {
             var task = tasksRepo.findById(taskId).orElse(null);
             if(task == null) throw new Exception("Task not found");
 
-            if(!task.getUser().getUserId().equals(request.getUserId())) throw new Exception("User don't have permission for this task");
+            if(!task.getUser().getUserId().equals(userId)) throw new Exception("User don't have permission for this task");
 
             var stage = stageRepo.findById(request.getStageId()).orElse(null);
             if(stage == null) throw new Exception("Stage not found");
@@ -144,13 +142,13 @@ public class TaskService {
     }
 
     // complete task
-    public ResponseEntity<BaseResponse> completeTask(BasicTaskRequest request, String taskId) {
+    public ResponseEntity<BaseResponse> completeTask(String userId, String taskId) {
         BaseResponse response = new BaseResponse();
         try {
             var task = tasksRepo.findById(taskId).orElse(null);
             if(task == null) throw new Exception("Task not found");
 
-            if(!task.getUser().getUserId().equals(request.getUserId())) throw new Exception("User don't have permission for this task");
+            if(!task.getUser().getUserId().equals(userId)) throw new Exception("User don't have permission for this task");
 
             var stage = stageRepo.findByStageName(completedTaskName).orElse(null);
             if(stage == null) throw new Exception("Stage not found");
@@ -173,13 +171,13 @@ public class TaskService {
     }
 
     // get specific task
-    public ResponseEntity<BaseResponse> getSpecificTask(BasicTaskRequest request, String taskId) {
+    public ResponseEntity<BaseResponse> getSpecificTask(String userId, String taskId) {
         BaseResponse response = new BaseResponse();
         try {
             var task = tasksRepo.findById(taskId).orElse(null);
             if(task == null) throw new Exception("Task not found");
 
-            if(!task.getUser().getUserId().equals(request.getUserId())) throw new Exception("User don't have permission for this task");
+            if(!task.getUser().getUserId().equals(userId)) throw new Exception("User don't have permission for this task");
 
             response.setStatus(HttpStatus.OK.value());
             response.setMessage("Success retrieve task detail");
@@ -203,10 +201,10 @@ public class TaskService {
     }
 
     // get all, incomplete and complete task
-    public ResponseEntity<BaseResponse> getAllTask(BasicTaskRequest request, String allTaskType) {
+    public ResponseEntity<BaseResponse> getAllTask(String userId, String allTaskType) {
         BaseResponse response = new BaseResponse();
         try {
-            var user = usersRepo.findById(request.getUserId()).orElse(null);
+            var user = usersRepo.findById(userId).orElse(null);
             if(user == null) throw new Exception("User not found");
 
             List<Tasks> tasks = new ArrayList<>();
